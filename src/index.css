@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-manrope: "Manrope", sans-serif;
+  --font-hanken: "Hanken Grotesk", sans-serif;
+  
+  --color-eco-green: #52b788;
+  --color-eco-hover: #419a71;
+  --color-brand-yellow: #ffd700;
+  --color-brand-gold: #c9a84c;
+  --color-brand-orange: #fb923c;
+  --color-brand-amber: #f59e0b;
+  --color-charcoal: #1a1a1a;
+  --color-nature-black: #0f1511;
+  --color-carbon-surface: #1c2a22;
+  --color-carbon-border: #26352c;
+  --color-carbon-dark: #0e1a14;
+}
+
+@layer utilities {
+  .hero-overlay {
+    background: linear-gradient(to right, rgba(15, 21, 17, 0.85) 0%, rgba(15, 21, 17, 0.4) 50%, rgba(15, 21, 17, 0.1) 100%);
+  }
+}

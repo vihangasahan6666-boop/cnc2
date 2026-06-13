@@ -1,0 +1,6 @@
+{
+  "name": "Carbon Neutral Community",
+  "description": "A community-focused platform for reducing carbon footprints and promoting sustainability through environmental initiatives in Sri Lanka.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
