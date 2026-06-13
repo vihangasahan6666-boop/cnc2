@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 import { ViewType } from '../types';
+import CNCLogo from './CNCLogo';
 
 interface HeaderProps {
   activeTab: ViewType;
@@ -28,6 +29,7 @@ export default function Header({ activeTab, setActiveTab }: HeaderProps) {
     { id: 'home', label: 'Home' },
     { id: 'projects', label: 'Projects' },
     { id: 'about', label: 'About us' },
+    { id: 'gallery', label: 'Gallery' },
     { id: 'contact', label: 'Contact us' },
   ] as const;
 
@@ -48,15 +50,10 @@ export default function Header({ activeTab, setActiveTab }: HeaderProps) {
     >
       {/* Brand Logo */}
       <div 
-        className="flex-shrink-0 h-14 md:h-16 w-auto cursor-pointer"
+        className="flex-shrink-0 h-20 md:h-24 w-auto cursor-pointer py-1"
         onClick={() => navigate('home')}
       >
-        <img
-          alt="Carbon Neutral Community Limited Logo"
-          className="h-full w-auto object-contain brightness-110 contrast-125 transition-transform hover:scale-105"
-          referrerPolicy="no-referrer"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuBx1MGXfPXhb0vBOHU9HZ411q1ZJwTX0CeXfDrG1IlQympnNIp6G3An4GDK1xhHQ79UJ6kWqs11-7TA3K3ClzyVmvFha-gYGWsZJPokwwhsCplNJHPoqFIiKC6hqbROnao85rQ3uA6Uwveyiyz6XlkLWFjPaQbAYcEu0AYMOjS7b3MsZ0pKTh7Ja32nI_ySjVQ7OHYMQRtLhODdKQOgFT_aEQbCfCwpcCvngVHRNAwOK4p54Aeb-yM_dwPhedHHklCZwNKYvHW9EfELs1U"
-        />
+        <CNCLogo className="h-full w-auto transition-transform hover:scale-105" />
       </div>
 
       {/* Desktop Navigation */}

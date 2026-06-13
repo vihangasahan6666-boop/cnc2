@@ -1,0 +1,5 @@
+You can place your logo files in this folder.
+- Place the full logo with text as: logo.png
+- Place the icon-only square logo as: logo-icon.png
+
+Vite will statically serve files placed in the "public" directory at the root / path.

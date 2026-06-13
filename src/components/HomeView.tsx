@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { Leaf, Users, Droplet, ArrowRight, Quote, Star } from 'lucide-react';
+import { Leaf, Users, Droplet, ArrowRight, Quote, Star, Image } from 'lucide-react';
 import { ViewType } from '../types';
 
 interface HomeViewProps {
@@ -21,6 +21,18 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
   // Parallax calculations for CNC backdrop text
   const cncTextY = Math.max(-100, 50 - (scrollY * 0.15));
   const cncTextScale = Math.min(1.1, 0.95 + (scrollY * 0.0002));
+
+  const handleOurTeamRedirect = () => {
+    setActiveTab('about');
+    setTimeout(() => {
+      const element = document.getElementById('our-team');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        window.scrollTo({ top: 1500, behavior: 'smooth' });
+      }
+    }, 120);
+  };
 
   return (
     <div className="space-y-24 pb-16">
@@ -219,22 +231,19 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
-            {/* Card 1: Wildlife */}
+            {/* Card 1: Our Team */}
             <div className="bg-carbon-surface/80 hover:bg-carbon-surface backdrop-blur-sm rounded-[2rem] p-8 md:p-10 flex flex-col items-center text-center shadow-xl border border-carbon-border hover:border-eco-green/40 transition-all duration-300 group">
               <div className="mb-6 h-28 flex items-center justify-center">
-                <img
-                  alt="Wildlife conservation element icon"
-                  className="h-full object-contain brightness-105 group-hover:scale-105 transition-transform"
-                  referrerPolicy="no-referrer"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAn-eY6FpB8L3q3-o_S_Nq0UfUv3Wp_6bV9lYjS_5-O7F_R_X_L_W_f_N_G_G_M_O_S_X_D_T_O_Q_M_F_T_C_G_X_K_X_9_Z_D_P_L_F_X_J_6_9_D_X_L_6_U_F_9_5_V_I_K_M_S_0_K_5_Q_B_B_P_N_K_S_F_L_S_S_7_E_1_U_H_I_J_F_H_W_O_H_O_W_D_M_D_J_L_B_M_1_Z_M_P_9_T_B_D_G_8_Q_J_5_P_7_J_3_P_K_3_F_D_J_Q_Y_Z-I_B_4_Q_M_N_E_T_E_Q_H_H_L_G_B_A_Q_W_S_4_L_O_M_1_J_F_Y_T_T_E_W_V_6_U_Y_Q_U_L_B_9_L_S_8_V_4_2_8_R_R_8_4_U_P_M_0-A_X_9_C_8_D_P_P-H_2_S_W_6_I_K_O_3_L_V_"
-                />
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-carbon-dark to-carbon-border border-2 border-eco-green/20 flex items-center justify-center text-eco-green select-none shadow-inner group-hover:border-eco-green/50 group-hover:scale-105 transition-all duration-300">
+                  <Users className="w-9 h-9 text-eco-green" />
+                </div>
               </div>
-              <span className="text-gray-500 text-xs uppercase tracking-widest font-bold">Protecting</span>
-              <h3 className="text-eco-green text-3xl font-extrabold font-manrope mt-1 mb-6">Wildlife</h3>
+              <span className="text-gray-500 text-xs uppercase tracking-widest font-bold">CNC Mission</span>
+              <h3 className="text-eco-green text-3xl font-extrabold font-manrope mt-1 mb-6">Our Team</h3>
               <button 
-                onClick={() => setActiveTab('projects')}
+                onClick={handleOurTeamRedirect}
                 className="w-11 h-11 bg-eco-green hover:bg-eco-hover text-charcoal rounded-full flex items-center justify-center transition-all shadow-md group-hover:scale-110 cursor-pointer"
-                aria-label="Navigate to Wildlife info"
+                aria-label="Navigate to Our Team details"
               >
                 <ArrowRight className="h-5 w-5" />
               </button>
@@ -263,19 +272,22 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
               </button>
             </div>
 
-            {/* Card 3: Recycling */}
+            {/* Card 3: Gallery */}
             <div className="bg-carbon-surface/80 hover:bg-carbon-surface backdrop-blur-sm rounded-[2rem] p-8 md:p-10 flex flex-col items-center text-center shadow-xl border border-carbon-border hover:border-eco-green/40 transition-all duration-300 group">
               <div className="mb-6 h-28 flex items-center justify-center">
-                <svg className="w-20 h-20 text-eco-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 4H20M20 4H10m10 0v10m-10 6v-5h-.581m0 0a8.003 8.003 0 0115.357-2" />
-                </svg>
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-carbon-dark to-carbon-border border-2 border-eco-green/20 flex items-center justify-center text-eco-green select-none shadow-inner group-hover:border-eco-green/50 group-hover:scale-105 transition-all duration-300">
+                  <Image className="w-9 h-9 text-eco-green" />
+                </div>
               </div>
-              <span className="text-gray-500 text-xs uppercase tracking-widest font-bold">Zero Waste</span>
-              <h3 className="text-eco-green text-3xl font-extrabold font-manrope mt-1 mb-6">Recycling</h3>
+              <span className="text-gray-500 text-xs uppercase tracking-widest font-bold">Visuals</span>
+              <h3 className="text-eco-green text-3xl font-extrabold font-manrope mt-1 mb-6">Gallery</h3>
               <button 
-                onClick={() => setActiveTab('projects')}
+                onClick={() => {
+                  setActiveTab('gallery');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
                 className="w-11 h-11 bg-eco-green hover:bg-eco-hover text-charcoal rounded-full flex items-center justify-center transition-all shadow-md group-hover:scale-110 cursor-pointer"
-                aria-label="Navigate to Recycling Programs"
+                aria-label="Navigate to Gallery"
               >
                 <ArrowRight className="h-5 w-5" />
               </button>

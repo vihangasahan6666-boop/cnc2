@@ -13,18 +13,16 @@ export default function Hero({ setActiveTab }: HeroProps) {
 
   return (
     <section className="relative px-4" data-purpose="hero-banner">
-      <div className="relative w-full h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden rounded-[2rem] shadow-2xl border border-white/5">
+      <div className="relative w-full h-auto aspect-[16/10] sm:aspect-auto sm:h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden rounded-[2rem] shadow-2xl border border-white/5">
         {/* Main Hero Cottage Image */}
         <img
           alt="Modern dark-toned architecture in a forest setting"
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 scale-102 hover:scale-[1.05]"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 scale-101 hover:scale-[1.04] saturate-120 brightness-110"
           referrerPolicy="no-referrer"
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJEcVpIycvkJ9oNjxhz1wub7D3TLbTO8XnZXJYqDFqZ3OUZvRhH6FTpycT3A3gQzSHr9sQo9GGP7hjN3EuMcn79ZTEnBNoTbXA3XyyPj63jO6IyPydPF1W2B0Q-_QyoqrfkwiGfiMdZ_SsXDKKmEprWx4TSaQ_23AGWAITDh1ypWiSeHgiuWRSbbKCSTmdje8YHqNMLaA79nJ4NCXFV-WPJRDa74VOy_s2gKWpBn89FwUAdihoyeySZXzVD46MkQtmQkbxwjTaww85b88"
         />
-        {/* Hero dark overlay */}
-        <div className="absolute inset-0 hero-overlay"></div>
         
-        {/* Empty Overlay container as specified to remove all overlay text */}
+        {/* Empty Overlay container */}
         <div className="absolute inset-0 flex flex-col justify-end px-6 md:px-16 lg:px-24 pb-32 max-w-4xl" />
 
         {/* Golden Badge Cutout inside the hero bottom right */}

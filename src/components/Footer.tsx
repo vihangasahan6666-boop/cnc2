@@ -1,5 +1,6 @@
 import { ViewType } from '../types';
 import { Mail, Phone, MapPin, Facebook, Instagram, Youtube, Twitter } from 'lucide-react';
+import CNCLogo from './CNCLogo';
 
 interface FooterProps {
   setActiveTab: (tab: ViewType) => void;
@@ -21,13 +22,8 @@ export default function Footer({ setActiveTab }: FooterProps) {
         
         {/* Column 1: Brand details */}
         <div className="flex flex-col space-y-6">
-          <div className="h-16 w-auto flex items-center">
-            <img
-              alt="CNC Logo"
-              className="h-full w-auto object-contain brightness-110"
-              referrerPolicy="no-referrer"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuALWWlgkKxD8MeYnJ5BNH-WIdBhgM3zLvDjbAcwl2SZEisn8-pbh7qPZWfI1dkMAJX2YFtI-XPA5-oS2rvFHxaNFbwXp1x87ODee1o-0OcTxaPD7qFYQBRWacae9dvIfmt1DZ7Lov04siiOKgOkEsv8OAe7VgkTxcMW8Bu1Zy7v5I55gIE00fDQZdkxIk8Ptn8etfPu2pXOjUAI4zTc9lE_ubyejk9nZnlH3jazzN3MwdS88m8WmOtAEJN4skZm9hKxdQImPPcRylPW"
-            />
+          <div className="h-28 md:h-32 w-auto flex items-center">
+            <CNCLogo className="h-full w-auto" />
           </div>
           <div className="space-y-4">
             <p className="text-brand-yellow italic font-semibold text-lg">
@@ -64,6 +60,12 @@ export default function Footer({ setActiveTab }: FooterProps) {
               About Us
             </button>
             <button
+              onClick={() => handleNavigate('gallery')}
+              className="text-left text-[#a0b0a8] hover:text-white hover:pl-3 hover:border-l-2 hover:border-eco-green transition-all duration-300 focus:outline-none cursor-pointer"
+            >
+              Gallery
+            </button>
+            <button
               onClick={() => handleNavigate('contact')}
               className="text-left text-[#a0b0a8] hover:text-white hover:pl-3 hover:border-l-2 hover:border-eco-green transition-all duration-300 focus:outline-none cursor-pointer"
             >
@@ -80,7 +82,7 @@ export default function Footer({ setActiveTab }: FooterProps) {
           <div className="space-y-4 text-sm text-gray-300">
             <div className="flex items-start space-x-3 group">
               <MapPin className="text-eco-green h-5 w-5 mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform" />
-              <span className="leading-relaxed">No:265, Serpentine Road, Borella, Colombo 08, 00800</span>
+              <span className="leading-relaxed">No:265, Serpentine Road, Borella, Colombo 08, Sri Lanka.</span>
             </div>
             
             <div className="flex items-center space-x-3 group text-gray-300 hover:text-white transition-colors">
@@ -131,13 +133,8 @@ export default function Footer({ setActiveTab }: FooterProps) {
       {/* Bottom Bar */}
       <div className="border-t border-[#1c2a22] pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs relative z-10">
         <div className="flex items-center gap-4">
-          <div className="h-6 opacity-40">
-            <img
-              alt="CNC Logo Small"
-              className="h-full w-auto"
-              referrerPolicy="no-referrer"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuALWWlgkKxD8MeYnJ5BNH-WIdBhgM3zLvDjbAcwl2SZEisn8-pbh7qPZWfI1dkMAJX2YFtI-XPA5-oS2rvFHxaNFbwXp1x87ODee1o-0OcTxaPD7qFYQBRWacae9dvIfmt1DZ7Lov04siiOKgOkEsv8OAe7VgkTxcMW8Bu1Zy7v5I55gIE00fDQZdkxIk8Ptn8etfPu2pXOjUAI4zTc9lE_ubyejk9nZnlH3jazzN3MwdS88m8WmOtAEJN4skZm9hKxdQImPPcRylPW"
-            />
+          <div className="h-14 flex items-center">
+            <CNCLogo showText={false} className="h-full w-auto" />
           </div>
           <p>© {currentYear} Carbon Neutral Community Limited. All Rights Reserved.</p>
         </div>

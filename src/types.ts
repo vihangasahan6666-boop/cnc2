@@ -1,4 +1,4 @@
-export type ViewType = 'home' | 'projects' | 'about' | 'contact';
+export type ViewType = 'home' | 'projects' | 'about' | 'contact' | 'gallery';
 
 export interface Testimonial {
   quote: string;

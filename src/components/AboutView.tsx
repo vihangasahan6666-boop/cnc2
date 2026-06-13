@@ -1,7 +1,61 @@
+import { useRef } from 'react';
 import { motion } from 'motion/react';
-import { Sprout, Handshake, Globe, Lightbulb, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Sprout, Handshake, Globe, Lightbulb, Facebook, Twitter, Instagram, Linkedin, ArrowLeft, ArrowRight } from 'lucide-react';
+
+// Custom SVG stylized placeholders for Team Avatars based on the requested designs
+const MalePlaceholder = () => (
+  <svg viewBox="0 0 120 120" className="w-full h-full text-gray-400" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="60" cy="60" r="54" fill="#0C140E" stroke="#1f3629" strokeWidth="2" />
+    <defs>
+      <clipPath id="avatar-clip-m">
+        <circle cx="60" cy="60" r="52" />
+      </clipPath>
+    </defs>
+    <g clipPath="url(#avatar-clip-m)">
+      <path d="M 52,72 L 52,82 L 68,82 L 68,72 Z" fill="#2d4a3b" />
+      <path d="M 40,43 C 40,25 80,25 80,43 Z" fill="#0C5E34" />
+      <circle cx="60" cy="52" r="16" fill="#1e3a2b" stroke="#2d4a3b" strokeWidth="1.5" />
+      <path d="M 44,42 C 43,30 55,26 62,30 C 68,30 74,32 76,40 C 73,38 70,38 67,40 C 65,37 60,37 57,40 C 55,38 48,38 44,42 Z" fill="#0C5E34" />
+      <path d="M 28,95 C 28,82 40,78 60,78 C 80,78 92,82 92,95 Z" fill="#243f30" stroke="#335943" strokeWidth="1.5" />
+      <path d="M 50,78 L 60,88 L 70,78 Z" fill="#0C140E" />
+    </g>
+  </svg>
+);
+
+const FemalePlaceholder = () => (
+  <svg viewBox="0 0 120 120" className="w-full h-full text-gray-400" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="60" cy="60" r="54" fill="#0C140E" stroke="#1f3629" strokeWidth="2" />
+    <defs>
+      <clipPath id="avatar-clip-f">
+        <circle cx="60" cy="60" r="52" />
+      </clipPath>
+    </defs>
+    <g clipPath="url(#avatar-clip-f)">
+      <path d="M 38,48 C 34,58 36,75 44,80 C 44,80 50,44 60,44 C 70,44 76,80 76,80 C 84,75 86,58 82,48 C 80,40 78,34 60,34 C 42,34 40,40 38,48 Z" fill="#0C5E34" />
+      <path d="M 53,72 L 53,82 L 67,82 L 67,72 Z" fill="#2d4a3b" />
+      <circle cx="60" cy="53" r="14.5" fill="#1e3a2b" stroke="#2d4a3b" strokeWidth="1.5" />
+      <path d="M 44,44 C 42,32 50,28 60,28 C 70,28 78,32 76,44 C 72,39 68,39 64,42 C 61,38 56,38 53,42 C 51,39 47,39 44,44 Z" fill="#0c5e34" />
+      <path d="M 30,95 C 30,83 42,80 60,80 C 78,80 90,83 90,95 Z" fill="#243f30" stroke="#335943" strokeWidth="1.5" />
+      <path d="M 48,80 C 52,86 68,86 72,80 Z" fill="#0C140E" />
+    </g>
+  </svg>
+);
 
 export default function AboutView() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -340, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 340, behavior: 'smooth' });
+    }
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -210,6 +264,112 @@ export default function AboutView() {
             </div>
           </div>
 
+        </div>
+      </motion.section>
+
+      {/* SECTION: OUR TEAM */}
+      <motion.section 
+        variants={itemVariants} 
+        className="px-6 md:px-16 lg:px-24 py-16 bg-carbon-dark/20 border-t border-white/5 relative"
+        id="our-team"
+      >
+        <div className="max-w-7xl mx-auto space-y-12">
+          
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="space-y-4 max-w-2xl">
+              <span className="text-eco-green font-bold text-sm uppercase tracking-[0.25em] block">
+                OUR TEAM
+              </span>
+              <p className="text-xl md:text-2xl font-bold font-manrope text-[#dbdad9] italic">
+                "Meet the passionate people driving CNC's mission forward"
+              </p>
+            </div>
+            
+            {/* Carousel Navigation Arrows */}
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={scrollLeft}
+                className="p-3 rounded-full bg-carbon-surface/60 hover:bg-eco-green hover:text-white text-eco-green border border-carbon-border hover:border-eco-green transition-all duration-300 shadow-md cursor-pointer flex items-center justify-center"
+                aria-label="Scroll left"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </button>
+              <button 
+                onClick={scrollRight}
+                className="p-3 rounded-full bg-carbon-surface/60 hover:bg-eco-green hover:text-white text-eco-green border border-carbon-border hover:border-eco-green transition-all duration-300 shadow-md cursor-pointer flex items-center justify-center"
+                aria-label="Scroll right"
+              >
+                <ArrowRight className="h-5 w-5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Swipable Carousel container */}
+          <div 
+            ref={scrollRef}
+            className="flex gap-8 overflow-x-auto pb-8 pt-4 px-4 snap-x snap-mandatory scroll-smooth scrollbar-none [&::-webkit-scrollbar]:hidden"
+            style={{
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none'
+            }}
+          >
+            {/* Note to Developer: 
+                To replace any member's avatar placeholder with their real photo,
+                simply add their photo (e.g., 'rohan.jpg') to the "/public/team/" folder.
+                Then add an "imageSrc" property to their object below, like:
+                imageSrc: '/team/rohan.jpg'
+             */}
+            {([
+              { name: 'Rohan Kodagoda', role: 'Chief Operation Officer', initials: 'RK', isFemale: false },
+              { name: 'Mahesh Gunawardhana', role: 'Operations Manager', initials: 'MG', isFemale: false },
+              { name: 'Duwidu Padiwita', role: 'Operation Executive', initials: 'DP', isFemale: false },
+              { name: 'Rajeendra Rajapaksha', role: 'International Affairs Coordinator', initials: 'RR', isFemale: false },
+              { name: 'Gimsara Upasenage', role: 'Project Development Executive', initials: 'GU', isFemale: false },
+              { name: 'Chamidu Kaluvila', role: 'Project Development Executive', initials: 'CK', isFemale: false },
+              { name: 'Chamika Dahanayakage', role: 'Project Development Executive', initials: 'CD', isFemale: false },
+              { name: 'Savishka Arambegedara', role: 'Project Development Executive', initials: 'SA', isFemale: false },
+              { name: 'Vihanga Karunarathna', role: 'Marketing Executive', initials: 'VK', isFemale: false },
+              { name: 'Udula Karandugoda', role: 'Marketing Executive', initials: 'UK', isFemale: false },
+              { name: 'Dishani Siriwardhana', role: 'HR Executive', initials: 'DS', isFemale: true }
+            ] as { name: string; role: string; initials: string; isFemale: boolean; imageSrc?: string }[]).map((member, idx) => (
+              <div 
+                key={idx}
+                className="w-[280px] sm:w-[315px] flex-shrink-0 snap-start bg-carbon-surface/40 hover:bg-carbon-surface/85 backdrop-blur-sm rounded-[2.5rem] p-8 flex flex-col items-center text-center shadow-xl border border-carbon-border hover:border-eco-green/40 transition-all duration-300 group relative overflow-hidden"
+              >
+                {/* Visual hover top beam */}
+                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-eco-green/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                
+                {/* Circular Avatar / Custom Silhouette */}
+                <div className="mb-6 relative w-24 h-24 rounded-full border-2 border-eco-green/20 flex items-center justify-center select-none shadow-inner group-hover:border-eco-green/50 group-hover:scale-105 transition-all duration-300 overflow-hidden bg-carbon-dark/60">
+                  {member.imageSrc ? (
+                    <img 
+                      src={member.imageSrc} 
+                      alt={member.name} 
+                      className="w-full h-full object-cover rounded-full"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : member.isFemale ? (
+                    <FemalePlaceholder />
+                  ) : (
+                    <MalePlaceholder />
+                  )}
+                </div>
+                
+                {/* Name & Role */}
+                <h3 className="text-white text-lg font-extrabold font-manrope tracking-tight leading-snug group-hover:text-eco-green transition-colors min-h-[56px] flex items-center justify-center">
+                  {member.name}
+                </h3>
+                <p className="text-gray-400 text-xs font-semibold uppercase tracking-wider font-hanken mt-1.5 max-w-[210px] min-h-[32px] flex items-center justify-center text-center">
+                  {member.role}
+                </p>
+                
+                {/* Branding Badge footer */}
+                <div className="mt-4 flex items-center gap-1 text-[9px] text-gray-500 group-hover:text-eco-green/70 transition-colors uppercase tracking-widest font-mono">
+                  <span>CNC FAMILY</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </motion.section>
 

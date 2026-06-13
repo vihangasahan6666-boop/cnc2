@@ -8,6 +8,7 @@ import HomeView from './components/HomeView';
 import ProjectsView from './components/ProjectsView';
 import AboutView from './components/AboutView';
 import ContactView from './components/ContactView';
+import GalleryView from './components/GalleryView';
 import { ViewType } from './types';
 
 export default function App() {
@@ -21,6 +22,8 @@ export default function App() {
         return <ProjectsView />;
       case 'about':
         return <AboutView />;
+      case 'gallery':
+        return <GalleryView />;
       case 'contact':
         return <ContactView />;
       default:
