@@ -82,7 +82,7 @@ export default function Footer({ setActiveTab }: FooterProps) {
           <div className="space-y-4 text-sm text-gray-300">
             <div className="flex items-start space-x-3 group">
               <MapPin className="text-eco-green h-5 w-5 mt-0.5 flex-shrink-0 group-hover:scale-110 transition-transform" />
-              <span className="leading-relaxed">No:265, Serpentine Road, Borella, Colombo 08, Sri Lanka.</span>
+              <span className="leading-relaxed">No:265, Serpentine Road, Borella, Colombo, Sri Lanka.</span>
             </div>
             
             <div className="flex items-center space-x-3 group text-gray-300 hover:text-white transition-colors">

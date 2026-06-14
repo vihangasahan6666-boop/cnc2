@@ -160,7 +160,7 @@ export default function ContactView() {
               <div className="space-y-1">
                 <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Office Address</p>
                 <p className="text-white text-base font-medium font-hanken">
-                  No:265, Serpentine Road, Borella, Colombo 08, 00800
+                  No:265, Serpentine Road, Borella, Colombo, Sri Lanka
                 </p>
               </div>
             </div>

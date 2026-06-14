@@ -33,13 +33,13 @@ const galleryData: GalleryItem[] = [
       'https://lh3.googleusercontent.com/aida-public/AB6AXuDVtqJcEip5f_coNOPjm4lAO6H0wVYPQt_8JA6OlZqBZTHfW_G2YnYKzGMTUWhJ25JqpLZdlNX5AqARORuiVvxEHYxpI8QPjIdSS0-6ZUd8tD97oCwAzZaD6ASnZntWmcaMNVAFYH_60eeHd_kwcMnSv8HX-0GoiT_o0ZRdHTLiX424kVLZ52k0sXv-EQNsQxMgtYDtfDXP1dGThVHlu2VqJjsSHKANWmcS4iYltnmkXdrU-EkcjYxJ2tusY2GRhhlvRTThCBxo0RHSYgc',
       'https://lh3.googleusercontent.com/aida-public/AB6AXuDcVcmefEQ21h3VTNaETGkfyOqX9Fn0nVzcIZInsudgj3tU0Zvvbm666r-07jbjYODlegHdHqWtV3986CZpvWKaRF1eLgSvDn416yAdln7cGui_RlyV0OMd4ZQJ6ttebG1ixSCCzoe4_Gm9b7q-Z5x0QragrOAo3UUCUtZhK0n6BETsqYnEBLCau8YAbfSTyXQc0ARJymJKavBwk4G54P7V9kA3cw7Hp9OejSmi_72PyjMlU5HCzRgkjGxlHI_vtasABpqryXLGoSXA'
     ],
-    location: 'Borella, Colombo 08, Sri Lanka',
+    location: 'Borella, Colombo, Sri Lanka',
     date: 'March 14, 2026',
     saplingsCount: 250,
     survivalRate: '98.4%',
     auditHash: 'CNC-REF-BOR-001',
     teamSize: 18,
-    fullStory: 'An intensive urban afforestation program in the heart of Colombo 08. Our practitioners collaborated with student volunteers to plant 250 native saplings, establishing a resilient canopy designed to lower the local microclimatic thermal footprint.'
+    fullStory: 'An intensive urban afforestation program in the heart of Colombo. Our practitioners collaborated with student volunteers to plant 250 native saplings, establishing a resilient canopy designed to lower the local microclimatic thermal footprint.'
   },
   {
     id: '2',
