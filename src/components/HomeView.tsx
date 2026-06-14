@@ -348,9 +348,9 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
               <span className="text-eco-green font-bold text-sm uppercase tracking-widest block">
                 What We Offer
               </span>
-              <h2 className="text-4xl md:text-5xl font-bold text-white font-manrope leading-tight">
-                Our Work Enables <br />
-                Real Environmental Change
+              <h2 className="font-bold text-white font-manrope leading-tight" style={{ fontSize: '24px' }}>
+                Our Work Enables Real <br />
+                Environmental Change
               </h2>
             </div>
             
@@ -717,18 +717,18 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
             ] as { name: string; role: string; isFemale: boolean; desc: string; imageSrc?: string }[]).map((member, idx) => (
               <div 
                 key={idx}
-                className="bg-carbon-surface/40 hover:bg-carbon-surface/85 backdrop-blur-sm rounded-[2rem] p-5 border border-carbon-border hover:border-eco-green/45 transition-all duration-300 group flex gap-5 items-stretch text-left shadow-lg relative overflow-hidden"
+                className="bg-carbon-surface/40 hover:bg-carbon-surface/85 backdrop-blur-sm rounded-2xl p-4 border border-carbon-border hover:border-eco-green/45 transition-all duration-300 group flex gap-4 items-center text-left shadow-lg relative overflow-hidden"
               >
                 {/* Visual hover top beam */}
                 <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-eco-green/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 
-                {/* Vertical Portrait Avatar Rectangle */}
-                <div className="w-[100px] md:w-[110px] h-[130px] md:h-[140px] flex-shrink-0 relative overflow-hidden rounded-2xl bg-carbon-dark/80 border border-white/5 flex items-center justify-center">
+                {/* Compact Rounded Avatar */}
+                <div className="w-14 h-14 md:w-16 md:h-16 flex-shrink-0 relative overflow-hidden rounded-xl bg-carbon-dark/80 border border-white/5 flex items-center justify-center">
                   {member.imageSrc ? (
                     <img 
                       src={member.imageSrc} 
                       alt={member.name} 
-                      className="w-full h-full object-cover rounded-2xl transition-transform duration-500 group-hover:scale-105"
+                      className="w-full h-full object-cover rounded-xl transition-transform duration-500 group-hover:scale-105"
                       referrerPolicy="no-referrer"
                     />
                   ) : member.isFemale ? (
@@ -742,22 +742,17 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
                   )}
                 </div>
                 
-                {/* Name & Role & Short Description side-by-side */}
-                <div className="flex flex-col justify-between py-1 flex-1 min-w-0">
-                  <div className="space-y-1">
-                    <h3 className="text-white text-sm md:text-base font-bold font-manrope tracking-tight leading-snug group-hover:text-eco-green transition-colors truncate">
-                      {member.name}
-                    </h3>
-                    <p className="text-[#ffd700] text-[10px] font-semibold uppercase tracking-wider font-hanken">
-                      {member.role}
-                    </p>
-                    <p className="text-gray-400 text-xs leading-relaxed line-clamp-3 font-hanken">
-                      {member.desc}
-                    </p>
-                  </div>
+                {/* Name & Role only */}
+                <div className="flex flex-col justify-center flex-1 min-w-0">
+                  <h3 className="text-white text-sm md:text-base font-bold font-manrope tracking-tight leading-snug group-hover:text-eco-green transition-colors truncate">
+                    {member.name}
+                  </h3>
+                  <p className="text-[#ffd700] text-[10px] md:text-xs font-semibold uppercase tracking-wider font-hanken mt-0.5">
+                    {member.role}
+                  </p>
                   
-                  {/* Branding Badge footer */}
-                  <div className="flex items-center gap-1 text-[9px] text-gray-500 group-hover:text-eco-green/70 transition-colors uppercase tracking-widest font-mono">
+                  {/* Branding Badge */}
+                  <div className="flex items-center gap-1 text-[8px] text-gray-500 mt-1 group-hover:text-eco-green/70 transition-colors uppercase tracking-widest font-mono">
                     <span>CNC ALLIANCE</span>
                   </div>
                 </div>
@@ -885,12 +880,9 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           
           <div className="lg:col-span-5 space-y-6">
-            <h2 className="text-3xl md:text-5xl font-extrabold text-white font-manrope leading-tight">
-              Hear from Our Core Partners About Their <span className="text-eco-green italic">Journey</span> On
+            <h2 className="text-3xl md:text-5xl font-extrabold text-white font-manrope leading-tight text-center">
+              Hear from Our Core Partners About Their <span className="text-eco-green italic">Journey</span> On <span className="text-eco-green font-black">CNC</span>
             </h2>
-            <div className="text-7xl md:text-9xl font-black text-eco-green font-manrope tracking-tighter select-none">
-              CNC
-            </div>
             <div>
               <button
                 onClick={() => {
