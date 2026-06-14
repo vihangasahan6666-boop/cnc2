@@ -76,16 +76,16 @@ export default function AboutView() {
       variants={containerVariants}
       initial="hidden"
       animate="show"
-      className="space-y-32 pb-20"
+      className="space-y-6 md:space-y-20 pb-12 md:pb-20"
     >
       
       {/* SECTION 1: WHO WE ARE */}
-      <motion.section variants={itemVariants} className="px-6 md:px-16 lg:px-24 py-6" id="who-we-are">
+      <motion.section variants={itemVariants} className="px-6 md:px-16 lg:px-24 py-3 md:py-6" id="who-we-are">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           
           {/* Portrait Image on LHS */}
           <div className="lg:col-span-5">
-            <div className="relative overflow-hidden rounded-tl-[10rem] rounded-bl-[2rem] rounded-br-[10rem] h-[400px] md:h-[500px] lg:h-[600px] border border-carbon-border/50 shadow-2xl group">
+            <div className="relative overflow-hidden rounded-tl-[10rem] rounded-bl-[2rem] rounded-br-[10rem] h-[260px] sm:h-[380px] md:h-[500px] lg:h-[600px] border border-carbon-border/50 shadow-2xl group">
               <img
                 alt="Environmental governance team collaborating in workshop"
                 className="w-full h-full object-cover transition-all duration-700"
@@ -124,7 +124,7 @@ export default function AboutView() {
         </div>
 
         {/* Chief Seattle Quote Box with visual polish */}
-        <div className="mt-20 max-w-4xl mx-auto relative rounded-tl-[6rem] rounded-br-[6rem] overflow-hidden bg-carbon-surface/60 border border-carbon-border p-8 md:p-12 flex flex-col md:flex-row gap-12 justify-between items-stretch shadow-2xl min-h-[350px]">
+        <div className="mt-8 md:mt-16 max-w-4xl mx-auto relative rounded-tl-[4rem] md:rounded-tl-[6rem] rounded-br-[4rem] md:rounded-br-[6rem] overflow-hidden bg-carbon-surface/60 border border-carbon-border p-6 md:p-12 flex flex-col md:flex-row gap-6 md:gap-12 justify-between items-stretch shadow-2xl min-h-0 md:min-h-[350px]">
           {/* Soft misty layout overlay */}
           <div className="absolute inset-0 z-0 pointer-events-none">
             <img
@@ -173,7 +173,7 @@ export default function AboutView() {
       </motion.section>
 
       {/* SECTION 2: IDENTITY, MISSION AND VALUES */}
-      <motion.section variants={itemVariants} className="px-6 md:px-16 lg:px-24 py-6" id="identity-vision-values">
+      <motion.section variants={itemVariants} className="px-6 md:px-16 lg:px-24 py-3 md:py-6" id="identity-vision-values">
         <div className="max-w-6xl mx-auto w-full space-y-12">
           
           <div className="text-center">
@@ -239,7 +239,7 @@ export default function AboutView() {
           </div>
 
           {/* Bilingual Mission Statement Box */}
-          <div className="bg-[#0a0f0c]/80 backdrop-blur-md rounded-[2.5rem] pt-16 pb-12 px-8 md:px-16 border border-white/5 shadow-xl flex flex-col md:flex-row gap-12 items-stretch">
+          <div className="bg-[#0a0f0c]/80 backdrop-blur-md rounded-[2.5rem] py-8 md:pt-16 md:pb-12 px-6 md:px-16 border border-white/5 shadow-xl flex flex-col md:flex-row gap-8 md:gap-12 items-stretch">
             
             {/* Sinhala text column */}
             <div className="flex-1 flex flex-col justify-center space-y-4">
@@ -266,7 +266,7 @@ export default function AboutView() {
       </motion.section>
 
       {/* SECTION 3: WHY CNC */}
-      <motion.section variants={itemVariants} className="relative px-6 md:px-16 lg:px-24 py-6 overflow-hidden" id="why-cnc">
+      <motion.section variants={itemVariants} className="relative px-6 md:px-16 lg:px-24 py-3 md:py-6 overflow-hidden" id="why-cnc">
         {/* Soft background watermark */}
         <div 
           className="absolute inset-0 pointer-events-none opacity-5 mix-blend-screen"
@@ -281,7 +281,7 @@ export default function AboutView() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           
           {/* Office Image LHS */}
-          <div className="lg:col-span-5 h-[400px] md:h-[500px] lg:h-[550px]">
+          <div className="lg:col-span-5 h-[260px] sm:h-[380px] md:h-[500px] lg:h-[550px]">
             <img
               alt="Sustainable corporate office interior representing CNC standard guidelines"
               className="w-full h-full object-cover rounded-tl-[8rem] rounded-bl-[2rem] border border-carbon-border/50 transition-all duration-700 shadow-2xl"
@@ -318,10 +318,10 @@ export default function AboutView() {
       {/* SECTION: OUR TEAM (Redesigned matching science & compliance board grid) */}
       <motion.section 
         variants={itemVariants} 
-        className="px-6 md:px-16 lg:px-24 py-20 bg-carbon-dark/20 border-t border-white/5 relative"
+        className="px-6 md:px-16 lg:px-24 py-4 md:py-12 bg-carbon-dark/20 border-t border-white/5 relative"
         id="our-team"
       >
-        <div className="max-w-7xl mx-auto space-y-16">
+        <div className="max-w-7xl mx-auto space-y-8 md:space-y-12">
           
           {/* Centered, high-contrast header matching the screenshot reference */}
           <div className="text-center space-y-4 max-w-4xl mx-auto">
@@ -408,18 +408,18 @@ export default function AboutView() {
             ] as { name: string; role: string; isFemale: boolean; desc: string; imageSrc?: string }[]).map((member, idx) => (
               <div 
                 key={idx}
-                className="bg-carbon-surface/40 hover:bg-carbon-surface/85 backdrop-blur-sm rounded-[2rem] p-5 border border-carbon-border hover:border-eco-green/45 transition-all duration-300 group flex gap-5 items-stretch text-left shadow-lg relative overflow-hidden"
+                className="bg-carbon-surface/40 hover:bg-carbon-surface/85 backdrop-blur-sm rounded-2xl p-4 border border-carbon-border hover:border-eco-green/45 transition-all duration-300 group flex gap-4 items-center text-left shadow-lg relative overflow-hidden"
               >
                 {/* Visual hover top beam */}
                 <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-eco-green/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 
-                {/* Vertical Portrait Avatar Rectangle */}
-                <div className="w-[100px] md:w-[110px] h-[130px] md:h-[140px] flex-shrink-0 relative overflow-hidden rounded-2xl bg-carbon-dark/80 border border-white/5 flex items-center justify-center">
+                {/* Compact Rounded Avatar */}
+                <div className="w-14 h-14 md:w-16 md:h-16 flex-shrink-0 relative overflow-hidden rounded-xl bg-carbon-dark/80 border border-white/5 flex items-center justify-center">
                   {member.imageSrc ? (
                     <img 
                       src={member.imageSrc} 
                       alt={member.name} 
-                      className="w-full h-full object-cover rounded-2xl transition-transform duration-500 group-hover:scale-105"
+                      className="w-full h-full object-cover rounded-xl transition-transform duration-500 group-hover:scale-105"
                       referrerPolicy="no-referrer"
                     />
                   ) : member.isFemale ? (
@@ -433,22 +433,17 @@ export default function AboutView() {
                   )}
                 </div>
                 
-                {/* Name & Role & Short Description side-by-side */}
-                <div className="flex flex-col justify-between py-1 flex-1 min-w-0">
-                  <div className="space-y-1">
-                    <h3 className="text-white text-sm md:text-base font-bold font-manrope tracking-tight leading-snug group-hover:text-eco-green transition-colors truncate">
-                      {member.name}
-                    </h3>
-                    <p className="text-[#ffd700] text-[10px] font-semibold uppercase tracking-wider font-hanken">
-                      {member.role}
-                    </p>
-                    <p className="text-gray-400 text-xs leading-relaxed line-clamp-3 font-hanken">
-                      {member.desc}
-                    </p>
-                  </div>
+                {/* Name & Role only */}
+                <div className="flex flex-col justify-center flex-1 min-w-0">
+                  <h3 className="text-white text-sm md:text-base font-bold font-manrope tracking-tight leading-snug group-hover:text-eco-green transition-colors truncate">
+                    {member.name}
+                  </h3>
+                  <p className="text-[#ffd700] text-[10px] md:text-xs font-semibold uppercase tracking-wider font-hanken mt-0.5">
+                    {member.role}
+                  </p>
                   
-                  {/* Branding Badge footer */}
-                  <div className="flex items-center gap-1 text-[9px] text-gray-500 group-hover:text-eco-green/70 transition-colors uppercase tracking-widest font-mono">
+                  {/* Branding Badge */}
+                  <div className="flex items-center gap-1 text-[8px] text-gray-500 mt-1 group-hover:text-eco-green/70 transition-colors uppercase tracking-widest font-mono">
                     <span>CNC ALLIANCE</span>
                   </div>
                 </div>
@@ -461,7 +456,7 @@ export default function AboutView() {
       {/* SECTION 4: FOLLOW US SECTION */}
       <motion.section 
         variants={itemVariants} 
-        className="px-6 md:px-16 lg:px-24 py-12 border-t border-white/5" 
+        className="px-6 md:px-16 lg:px-24 py-4 md:py-10 border-t border-white/5" 
         id="follow-us"
       >
         <div className="max-w-4xl mx-auto text-center flex flex-col items-center space-y-6">
@@ -487,7 +482,7 @@ export default function AboutView() {
 
             {/* Twitter */}
             <a 
-              href="https://twitter.com" 
+              href="https://x.com/cnc__community" 
               target="_blank" 
               rel="noreferrer" 
               className="text-[#1da1f2] hover:scale-115 active:scale-95 transition-all duration-300 hover:brightness-125"
@@ -498,7 +493,7 @@ export default function AboutView() {
 
             {/* Instagram */}
             <a 
-              href="https://instagram.com" 
+              href="https://www.instagram.com/carbonneutralcommunity" 
               target="_blank" 
               rel="noreferrer" 
               className="text-[#e1306c] hover:scale-115 active:scale-95 transition-all duration-300 hover:brightness-125"

@@ -105,7 +105,9 @@ export default function Footer({ setActiveTab }: FooterProps) {
               <Facebook className="h-5 w-5" />
             </a>
             <a
-              href="#"
+              href="https://www.instagram.com/carbonneutralcommunity"
+              target="_blank"
+              rel="noreferrer"
               className="p-2 rounded-full bg-nature-black hover:bg-eco-green/10 text-gray-400 hover:text-eco-green transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
               aria-label="Instagram link"
             >
@@ -119,7 +121,9 @@ export default function Footer({ setActiveTab }: FooterProps) {
               <Youtube className="h-5 w-5" />
             </a>
             <a
-              href="#"
+              href="https://x.com/cnc__community"
+              target="_blank"
+              rel="noreferrer"
               className="p-2 rounded-full bg-nature-black hover:bg-eco-green/10 text-gray-400 hover:text-eco-green transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
               aria-label="Twitter X link"
             >
