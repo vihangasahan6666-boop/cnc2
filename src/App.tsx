@@ -5,10 +5,10 @@ import Hero from './components/Hero';
 import Footer from './components/Footer';
 import WebGLBackground from './components/WebGLBackground';
 import HomeView from './components/HomeView';
+import GalleryView from './components/GalleryView';
 import ProjectsView from './components/ProjectsView';
 import AboutView from './components/AboutView';
 import ContactView from './components/ContactView';
-import GalleryView from './components/GalleryView';
 import { ViewType } from './types';
 
 export default function App() {

@@ -96,33 +96,62 @@ export default function WebGLBackground() {
     const resLoc = gl.getUniformLocation(program, 'u_resolution');
 
     let animationFrameId: number;
+    let lastTime = 0;
+    const isMobile = typeof navigator !== 'undefined' && /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const fpsInterval = isMobile ? 1000 / 30 : 1000 / 60; // 30 FPS on mobile, 60 FPS on desktop works beautifully with fluid motion
 
     function resize() {
       if (!canvas || !gl) return;
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      // High-DPI screen shader optimizations for mobile and desktop
+      const dpr = isMobile ? 0.5 : Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
       gl.viewport(0, 0, canvas.width, canvas.height);
       if (resLoc) {
         gl.uniform2f(resLoc, canvas.width, canvas.height);
       }
     }
 
-    window.addEventListener('resize', resize);
+    let resizeTimeout: any;
+    function handleResize() {
+      if (resizeTimeout) clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(resize, 150);
+    }
+
+    let isPageVisible = true;
+    function handleVisibilityChange() {
+      isPageVisible = document.visibilityState === 'visible';
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    window.addEventListener('resize', handleResize, { passive: true });
     resize();
 
     function render(time: number) {
       if (!gl) return;
+      animationFrameId = requestAnimationFrame(render);
+
+      // Avoid drawing frames and doing GPU math when the tab is in the background
+      if (!isPageVisible) return;
+
+      // Throttling render rate for battery efficiency and temperature protection on mobile
+      const elapsed = time - lastTime;
+      if (elapsed < fpsInterval) return;
+
+      lastTime = time - (elapsed % fpsInterval);
+
       if (timeLoc) {
         gl.uniform1f(timeLoc, time * 0.001);
       }
       gl.drawArrays(gl.TRIANGLES, 0, 6);
-      animationFrameId = requestAnimationFrame(render);
     }
     animationFrameId = requestAnimationFrame(render);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('resize', resize);
+      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      if (resizeTimeout) clearTimeout(resizeTimeout);
       if (gl) {
         gl.deleteProgram(program);
         gl.deleteShader(vs);

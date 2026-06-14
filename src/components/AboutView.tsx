@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion } from 'motion/react';
-import { Sprout, Handshake, Globe, Lightbulb, Facebook, Twitter, Instagram, Linkedin, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Sprout, Handshake, Globe, Lightbulb, Facebook, Twitter, Instagram, Linkedin, ArrowLeft, ArrowRight, Quote } from 'lucide-react';
 
 // Custom SVG stylized placeholders for Team Avatars based on the requested designs
 const MalePlaceholder = () => (
@@ -121,6 +121,54 @@ export default function AboutView() {
             </div>
           </div>
 
+        </div>
+
+        {/* Chief Seattle Quote Box with visual polish */}
+        <div className="mt-20 max-w-4xl mx-auto relative rounded-tl-[6rem] rounded-br-[6rem] overflow-hidden bg-carbon-surface/60 border border-carbon-border p-8 md:p-12 flex flex-col md:flex-row gap-12 justify-between items-stretch shadow-2xl min-h-[350px]">
+          {/* Soft misty layout overlay */}
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            <img
+              alt="Misty evergreen forest backdrop for quote box"
+              className="w-full h-full object-cover opacity-[0.06]"
+              referrerPolicy="no-referrer"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgEYvZ7hQxFCZ3CeyIAeWuWWliIlSmIIoATQzgzGUhfF1AoKkaBiXsl1Pv7uPhP7ltOdcO7khU1XSp3WDfi3btUj8JEKMFOWRl2kZizJDyQia0Zk8X7bxBgpieDyQkS5BAtbfwZ00MkJjqOFoO4zu139KtQeI5Uujwlp5TzWT_9JXXPLCrQ7idwCb-XrsAwJxrTMGuCabBUrT-0Ar00UXBsyhUh52NMrXrwKBbelRgrLI8vziEZdO21HTaAf841ZKWpA_foaVfeju5"
+            />
+          </div>
+
+          <div className="relative z-10 flex-1 flex flex-col justify-between space-y-6">
+            <div>
+              <Quote className="h-10 w-10 text-eco-green opacity-45 mb-4" />
+              <blockquote className="text-lg md:text-xl italic text-[#fbf9f8] leading-relaxed pl-4 border-l-2 border-eco-green">
+                “We love this earth as a newborn <span className="text-eco-green font-semibold">loves its mother’s heartbeat</span>. So, if we sell you our land, love it as we have loved it. Care for it, as we have cared for it. Hold in your mind the memory of the land as it is when you receive it. <span className="text-eco-green font-semibold">Preserve the land for all children</span>, and love it, as God loves us.”
+              </blockquote>
+            </div>
+
+            <div className="pt-4">
+              <span className="text-[#ffd700] font-bold text-xs uppercase tracking-[0.25em] block">
+                Words That Guide Us
+              </span>
+            </div>
+          </div>
+
+          <div className="hidden md:block w-px bg-white/10 self-stretch my-2 relative z-10"></div>
+
+          <div className="relative z-10 flex flex-col justify-center items-center md:items-end text-center md:text-right space-y-4">
+            <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-carbon-border shadow-xl">
+              <img
+                alt="Historical Portrait profile representation of Chief Seattle"
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuArGm9qZshdmEAZNdX2tXzUnyeeVkVH5r9FlxlRaZxUZ3MiFo68uGxeJG1faRbquUOrIob3TG7DfH7Oplqw6KXVSLpUGH7y93sH6BpiFHef4OAyr0jvX7DyVF54vVOCEJqFZOWw_v9ngKthA9NgxGFNuyYuFekXlitFd4LG_2EBvpfhfo5fF-ZhsS_kxUtUIK_6-ISq7oteGveSCjEnp1Q9sgMrJ3zdQE9vKWpZEQttwSvnwlX7fhxRDbs_fBSAcgfZAWe6LnIWXbAhzOs"
+              />
+            </div>
+            <div>
+              <p className="font-bold text-lg text-white font-manrope">Chief Seattle</p>
+              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mt-0.5">
+                Leader of Duwamish & Suquamish
+              </p>
+              <p className="text-[10px] text-gray-600 mt-0.5">c. 1854 speech</p>
+            </div>
+          </div>
         </div>
       </motion.section>
 
@@ -267,105 +315,142 @@ export default function AboutView() {
         </div>
       </motion.section>
 
-      {/* SECTION: OUR TEAM */}
+      {/* SECTION: OUR TEAM (Redesigned matching science & compliance board grid) */}
       <motion.section 
         variants={itemVariants} 
-        className="px-6 md:px-16 lg:px-24 py-16 bg-carbon-dark/20 border-t border-white/5 relative"
+        className="px-6 md:px-16 lg:px-24 py-20 bg-carbon-dark/20 border-t border-white/5 relative"
         id="our-team"
       >
-        <div className="max-w-7xl mx-auto space-y-12">
+        <div className="max-w-7xl mx-auto space-y-16">
           
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="space-y-4 max-w-2xl">
-              <span className="text-eco-green font-bold text-sm uppercase tracking-[0.25em] block">
-                OUR TEAM
-              </span>
-              <p className="text-xl md:text-2xl font-bold font-manrope text-[#dbdad9] italic">
-                "Meet the passionate people driving CNC's mission forward"
-              </p>
-            </div>
-            
-            {/* Carousel Navigation Arrows */}
-            <div className="flex items-center gap-3">
-              <button 
-                onClick={scrollLeft}
-                className="p-3 rounded-full bg-carbon-surface/60 hover:bg-eco-green hover:text-white text-eco-green border border-carbon-border hover:border-eco-green transition-all duration-300 shadow-md cursor-pointer flex items-center justify-center"
-                aria-label="Scroll left"
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </button>
-              <button 
-                onClick={scrollRight}
-                className="p-3 rounded-full bg-carbon-surface/60 hover:bg-eco-green hover:text-white text-eco-green border border-carbon-border hover:border-eco-green transition-all duration-300 shadow-md cursor-pointer flex items-center justify-center"
-                aria-label="Scroll right"
-              >
-                <ArrowRight className="h-5 w-5" />
-              </button>
-            </div>
+          {/* Centered, high-contrast header matching the screenshot reference */}
+          <div className="text-center space-y-4 max-w-4xl mx-auto">
+            <span className="text-eco-green font-bold text-sm uppercase tracking-[0.25em] block">
+              OUR TEAM
+            </span>
+            <h2 className="text-white text-3xl md:text-5xl font-extrabold font-manrope tracking-tight leading-tight">
+              At the forefront of <span className="text-eco-green">community carbon neutrality</span>
+            </h2>
+            <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
+              To ensure our botanical practices are both highly impactful and standard-compliant, our team manages services and audits in close collaboration with Local Communities.
+            </p>
           </div>
 
-          {/* Swipable Carousel container */}
-          <div 
-            ref={scrollRef}
-            className="flex gap-8 overflow-x-auto pb-8 pt-4 px-4 snap-x snap-mandatory scroll-smooth scrollbar-none [&::-webkit-scrollbar]:hidden"
-            style={{
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none'
-            }}
-          >
-            {/* Note to Developer: 
-                To replace any member's avatar placeholder with their real photo,
-                simply add their photo (e.g., 'rohan.jpg') to the "/public/team/" folder.
-                Then add an "imageSrc" property to their object below, like:
-                imageSrc: '/team/rohan.jpg'
-             */}
+          {/* Profile Card Grid (Adapted to CNC theme, echoing layout from screenshot) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
             {([
-              { name: 'Rohan Kodagoda', role: 'Chief Operation Officer', initials: 'RK', isFemale: false },
-              { name: 'Mahesh Gunawardhana', role: 'Operations Manager', initials: 'MG', isFemale: false },
-              { name: 'Duwidu Padiwita', role: 'Operation Executive', initials: 'DP', isFemale: false },
-              { name: 'Rajeendra Rajapaksha', role: 'International Affairs Coordinator', initials: 'RR', isFemale: false },
-              { name: 'Gimsara Upasenage', role: 'Project Development Executive', initials: 'GU', isFemale: false },
-              { name: 'Chamidu Kaluvila', role: 'Project Development Executive', initials: 'CK', isFemale: false },
-              { name: 'Chamika Dahanayakage', role: 'Project Development Executive', initials: 'CD', isFemale: false },
-              { name: 'Savishka Arambegedara', role: 'Project Development Executive', initials: 'SA', isFemale: false },
-              { name: 'Vihanga Karunarathna', role: 'Marketing Executive', initials: 'VK', isFemale: false },
-              { name: 'Udula Karandugoda', role: 'Marketing Executive', initials: 'UK', isFemale: false },
-              { name: 'Dishani Siriwardhana', role: 'HR Executive', initials: 'DS', isFemale: true }
-            ] as { name: string; role: string; initials: string; isFemale: boolean; imageSrc?: string }[]).map((member, idx) => (
+              { 
+                name: 'Rohan Kodagoda', 
+                role: 'Chief Operation Officer', 
+                isFemale: false,
+                desc: 'Co-leads strategic development, operations, and policy alignment across Sri Lanka\'s community clusters.'
+              },
+              { 
+                name: 'Mahesh Gunawardhana', 
+                role: 'Operations Manager', 
+                isFemale: false,
+                desc: 'Manages field operations, coordinate nurseries, and native forestry survival auditing.'
+              },
+              { 
+                name: 'Duwidu Padiwita', 
+                role: 'Operation Executive', 
+                isFemale: false,
+                desc: 'Directs logistical execution, nursery mobilization, and regional volunteer support networks.'
+              },
+              { 
+                name: 'Rajeendra Rajapaksha', 
+                role: 'International Affairs Coordinator', 
+                isFemale: false,
+                desc: 'Coordinates global climate compliance, green funding networks, and international partnerships.'
+              },
+              { 
+                name: 'Gimsara Upasenage', 
+                role: 'Project Development Executive', 
+                isFemale: false,
+                desc: 'Drives local community chapters, native species selection, and environmental compliance audits.'
+              },
+              { 
+                name: 'Chamidu Kaluvila', 
+                role: 'Project Development Executive', 
+                isFemale: false,
+                desc: 'Facilitates university networking chapters, youth activation, and school forestation tracks.'
+              },
+              { 
+                name: 'Chamika Dahanayakage', 
+                role: 'Project Development Executive', 
+                isFemale: false,
+                desc: 'Coordinates carbon-audits, database registration, and corporate green stamp processing.'
+              },
+              { 
+                name: 'Savishka Arambegedara', 
+                role: 'Project Development Executive', 
+                isFemale: false,
+                desc: 'Leads field operations tracking, site mapping, and localized community partnership plans.'
+              },
+              { 
+                name: 'Vihanga Karunarathna', 
+                role: 'Marketing Executive', 
+                isFemale: false,
+                desc: 'Spearheads digital green awareness campaigns, brand messaging, and climate action panels.'
+              },
+              { 
+                name: 'Udula Karandugoda', 
+                role: 'Marketing Executive', 
+                isFemale: false,
+                desc: 'Curates interactive visual reporting, community engagement posts, and public outreach.'
+              },
+              { 
+                name: 'Dishani Siriwardhana', 
+                role: 'HR Executive', 
+                isFemale: true,
+                desc: 'Oversees administrative operations, alliance recruitment, training, and volunteer safety.'
+              }
+            ] as { name: string; role: string; isFemale: boolean; desc: string; imageSrc?: string }[]).map((member, idx) => (
               <div 
                 key={idx}
-                className="w-[280px] sm:w-[315px] flex-shrink-0 snap-start bg-carbon-surface/40 hover:bg-carbon-surface/85 backdrop-blur-sm rounded-[2.5rem] p-8 flex flex-col items-center text-center shadow-xl border border-carbon-border hover:border-eco-green/40 transition-all duration-300 group relative overflow-hidden"
+                className="bg-carbon-surface/40 hover:bg-carbon-surface/85 backdrop-blur-sm rounded-[2rem] p-5 border border-carbon-border hover:border-eco-green/45 transition-all duration-300 group flex gap-5 items-stretch text-left shadow-lg relative overflow-hidden"
               >
                 {/* Visual hover top beam */}
                 <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-eco-green/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 
-                {/* Circular Avatar / Custom Silhouette */}
-                <div className="mb-6 relative w-24 h-24 rounded-full border-2 border-eco-green/20 flex items-center justify-center select-none shadow-inner group-hover:border-eco-green/50 group-hover:scale-105 transition-all duration-300 overflow-hidden bg-carbon-dark/60">
+                {/* Vertical Portrait Avatar Rectangle */}
+                <div className="w-[100px] md:w-[110px] h-[130px] md:h-[140px] flex-shrink-0 relative overflow-hidden rounded-2xl bg-carbon-dark/80 border border-white/5 flex items-center justify-center">
                   {member.imageSrc ? (
                     <img 
                       src={member.imageSrc} 
                       alt={member.name} 
-                      className="w-full h-full object-cover rounded-full"
+                      className="w-full h-full object-cover rounded-2xl transition-transform duration-500 group-hover:scale-105"
                       referrerPolicy="no-referrer"
                     />
                   ) : member.isFemale ? (
-                    <FemalePlaceholder />
+                    <div className="w-full h-full scale-110">
+                      <FemalePlaceholder />
+                    </div>
                   ) : (
-                    <MalePlaceholder />
+                    <div className="w-full h-full scale-110">
+                      <MalePlaceholder />
+                    </div>
                   )}
                 </div>
                 
-                {/* Name & Role */}
-                <h3 className="text-white text-lg font-extrabold font-manrope tracking-tight leading-snug group-hover:text-eco-green transition-colors min-h-[56px] flex items-center justify-center">
-                  {member.name}
-                </h3>
-                <p className="text-gray-400 text-xs font-semibold uppercase tracking-wider font-hanken mt-1.5 max-w-[210px] min-h-[32px] flex items-center justify-center text-center">
-                  {member.role}
-                </p>
-                
-                {/* Branding Badge footer */}
-                <div className="mt-4 flex items-center gap-1 text-[9px] text-gray-500 group-hover:text-eco-green/70 transition-colors uppercase tracking-widest font-mono">
-                  <span>CNC FAMILY</span>
+                {/* Name & Role & Short Description side-by-side */}
+                <div className="flex flex-col justify-between py-1 flex-1 min-w-0">
+                  <div className="space-y-1">
+                    <h3 className="text-white text-sm md:text-base font-bold font-manrope tracking-tight leading-snug group-hover:text-eco-green transition-colors truncate">
+                      {member.name}
+                    </h3>
+                    <p className="text-[#ffd700] text-[10px] font-semibold uppercase tracking-wider font-hanken">
+                      {member.role}
+                    </p>
+                    <p className="text-gray-400 text-xs leading-relaxed line-clamp-3 font-hanken">
+                      {member.desc}
+                    </p>
+                  </div>
+                  
+                  {/* Branding Badge footer */}
+                  <div className="flex items-center gap-1 text-[9px] text-gray-500 group-hover:text-eco-green/70 transition-colors uppercase tracking-widest font-mono">
+                    <span>CNC ALLIANCE</span>
+                  </div>
                 </div>
               </div>
             ))}
@@ -384,7 +469,7 @@ export default function AboutView() {
             Follow Us
           </h2>
           <p className="text-gray-400 text-sm md:text-base max-w-xl font-hanken">
-            Sample text. Lorem ipsum dolor sit amet, consectetur adipiscing elit nullam.
+            Stay updated with our latest reforestation drives, local youth campus workshops, and community carbon reduction initiatives across Sri Lanka by following us on our channels.
           </p>
           
           {/* Social logos aligned, color-shaded matching their exact brands */}

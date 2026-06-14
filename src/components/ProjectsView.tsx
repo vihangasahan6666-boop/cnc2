@@ -109,7 +109,7 @@ export default function ProjectsView() {
                 Educated Mobilization
               </span>
               <h2 className="text-4xl md:text-5xl font-extrabold font-manrope text-white leading-tight uppercase">
-                CNC <span class="text-brand-orange">Networking Clubs</span>
+                CNC <span className="text-brand-orange">Networking Clubs</span>
               </h2>
               <p className="text-base md:text-lg text-gray-300 font-hanken leading-relaxed">
                 The most powerful force for environmental change is a connected, informed, and motivated community. CNC Networking Clubs are grassroots environmental chapters established within educational campuses and social blocks — united around climate restoration.
