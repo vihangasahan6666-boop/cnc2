@@ -10,6 +10,7 @@ import ProjectsView from './components/ProjectsView';
 import AboutView from './components/AboutView';
 import ContactView from './components/ContactView';
 import { ViewType } from './types';
+import { ToastProvider } from './components/ToastContext';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<ViewType>('home');
@@ -32,38 +33,40 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen text-[#dbdad9] font-sans antialiased overflow-x-hidden p-3 sm:p-4 md:p-8">
-      {/* 1. WebGL Organic Shader Background */}
-      <WebGLBackground />
+    <ToastProvider>
+      <div className="relative min-h-screen text-[#dbdad9] font-sans antialiased overflow-x-hidden p-3 sm:p-4 md:p-8">
+        {/* 1. WebGL Organic Shader Background */}
+        <WebGLBackground />
 
-      {/* 2. Main Container Frame */}
-      <div className="max-w-7xl mx-auto rounded-[2.5rem] shadow-2xl bg-carbon-dark/65 backdrop-blur-md border border-carbon-border/50 overflow-hidden flex flex-col justify-between min-h-[90vh]">
-        
-        {/* Header - Unified navigation */}
-        <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+        {/* 2. Main Container Frame */}
+        <div className="max-w-7xl mx-auto rounded-[2.5rem] shadow-2xl bg-carbon-dark/65 backdrop-blur-md border border-carbon-border/50 overflow-hidden flex flex-col justify-between min-h-[90vh]">
+          
+          {/* Header - Unified navigation */}
+          <Header activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        {/* Global Hero Section Banner with no text on any page */}
-        <Hero setActiveTab={setActiveTab} />
+          {/* Global Hero Section Banner with no text on any page - now displayed only on home page */}
+          {activeTab === 'home' && <Hero setActiveTab={setActiveTab} />}
 
-        {/* Dynamic Inner Tab View with Fade-In Motion */}
-        <main className="flex-grow pt-8 md:pt-12">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }}
-              transition={{ duration: 0.35, ease: 'easeInOut' }}
-            >
-              {renderContent()}
-            </motion.div>
-          </AnimatePresence>
-        </main>
+          {/* Dynamic Inner Tab View with Fade-In Motion - tighter spacing for Home view underneath the Hero banner */}
+          <main className={`flex-grow ${activeTab === 'home' ? 'pt-1 md:pt-2' : 'pt-8 md:pt-12'}`}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.35, ease: 'easeInOut' }}
+              >
+                {renderContent()}
+              </motion.div>
+            </AnimatePresence>
+          </main>
 
-        {/* Footer - Social ties and quick-route nodes */}
-        <Footer setActiveTab={setActiveTab} />
+          {/* Footer - Social ties and quick-route nodes */}
+          <Footer setActiveTab={setActiveTab} />
 
+        </div>
       </div>
-    </div>
+    </ToastProvider>
   );
 }

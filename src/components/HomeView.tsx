@@ -4,6 +4,7 @@ import {
   Leaf, Users, Droplet, ArrowRight, ArrowLeft, Quote, Star, Image, Target, Compass, ShieldCheck, Sprout, Handshake, Globe, Lightbulb,
   Eye, MapPin, Calendar, Hash, ChevronLeft, ChevronRight, X, Camera, CheckCircle2, Sparkles, Search, Share2, Download, Info, Sliders, Copy
 } from 'lucide-react';
+import { useToast } from './ToastContext';
 
 // Custom SVG stylized placeholders for Team Avatars based on the requested designs
 const MalePlaceholder = () => (
@@ -178,6 +179,7 @@ interface HomeViewProps {
 }
 
 export default function HomeView({ setActiveTab }: HomeViewProps) {
+  const { toast } = useToast();
   const scrollRef = useRef<HTMLDivElement>(null);
   const navScrollRef = useRef<HTMLDivElement>(null);
 
@@ -193,13 +195,14 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
     }
   };
 
-  // Parallax calculations for CNC backdrop text using highly optimized motion values (bypassing React re-renders)
+  // Parallax calculations for CNC backdrop text using highly optimized motion values (bypassing React re-renders) - adjusted to shift downward and avoid icon overlap
   const { scrollY } = useScroll();
-  const cncTextY = useTransform(scrollY, [0, 2000], [50, -150]);
+  const cncTextY = useTransform(scrollY, [0, 2000], [130, -50]);
   const cncTextScale = useTransform(scrollY, [0, 2000], [0.95, 1.15]);
 
   const handleOurTeamRedirect = () => {
     setActiveTab('about');
+    toast('Routing to CNC Alliance structure and board members.', 'eco');
     setTimeout(() => {
       const element = document.getElementById('our-team');
       if (element) {
@@ -211,10 +214,10 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
   };
 
   return (
-    <div className="space-y-24 pb-16">
+    <div className="pb-16">
 
-      {/* 🧭 Home Section Navigation Bar */}
-      <section className="px-4 md:px-16 lg:px-24 pt-4 sticky top-4 z-[90]">
+      {/* 🧭 Home Section Navigation Bar - slimmed top padding for a tighter look */}
+      <section className="px-4 md:px-16 lg:px-24 pt-1 md:pt-2 pb-0 sticky top-4 z-[90]">
         <div className="relative mx-auto max-w-full group">
           <div 
             ref={navScrollRef}
@@ -282,8 +285,11 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
         </div>
       </section>
 
-      {/* SECTION 2: WHY WE EXIST SECTION */}
-      <section className="px-6 md:px-16 lg:px-24 py-12" id="why-we-exist" data-purpose="why-we-exist">
+      {/* Group content sections inside a styled grid with a cohesive, tighter gap underneath sub-navigation */}
+      <div className="space-y-4 md:space-y-6 mt-2 md:mt-3">
+
+        {/* SECTION 2: WHY WE EXIST SECTION - slightly reduced padding to look tighter */}
+        <section className="px-6 md:px-16 lg:px-24 py-3 md:py-4" id="why-we-exist" data-purpose="why-we-exist">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           
           {/* Content Side */}
@@ -334,8 +340,8 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
       </section>
 
       {/* SECTION 3: WHAT WE OFFER */}
-      <section className="px-6 md:px-16 lg:px-24 py-12" id="what-we-offer" data-purpose="what-we-offer">
-        <div className="max-w-7xl mx-auto space-y-12">
+      <section className="px-6 md:px-16 lg:px-24 py-3 md:py-4" id="what-we-offer" data-purpose="what-we-offer">
+        <div className="max-w-7xl mx-auto space-y-6">
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-4 max-w-2xl">
@@ -390,7 +396,7 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
             </div>
           </div>
 
-          <div className="pt-4 text-center">
+          <div className="pt-2 text-center">
             <button
               onClick={() => {
                 setActiveTab('projects');
@@ -412,7 +418,7 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
-        className="px-6 md:px-16 lg:px-24 py-12" 
+        className="px-6 md:px-16 lg:px-24 py-3 md:py-4" 
         id="who-we-are"
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
@@ -464,7 +470,7 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
-        className="px-6 md:px-16 lg:px-24 py-12" 
+        className="px-6 md:px-16 lg:px-24 py-3 md:py-4" 
         id="identity-vision-values"
       >
         <div className="max-w-6xl mx-auto w-full space-y-12">
@@ -532,7 +538,7 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
           </div>
 
           {/* Bilingual Mission Statement Box */}
-          <div className="bg-[#0a0f0c]/80 backdrop-blur-md rounded-[2.5rem] pt-16 pb-12 px-8 md:px-16 border border-white/5 shadow-xl flex flex-col md:flex-row gap-12 items-stretch">
+          <div className="bg-[#0a0f0c]/80 backdrop-blur-md rounded-[2.5rem] pt-8 pb-8 px-6 md:px-10 border border-white/5 shadow-xl flex flex-col md:flex-row gap-12 items-stretch">
             
             {/* Sinhala text column */}
             <div className="flex-1 flex flex-col justify-center space-y-4">
@@ -564,7 +570,7 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
-        className="relative px-6 md:px-16 lg:px-24 py-12 overflow-hidden" 
+        className="relative px-6 md:px-16 lg:px-24 py-3 md:py-4 overflow-hidden" 
         id="why-cnc"
       >
         {/* Soft background watermark */}
@@ -621,10 +627,10 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
         initial="hidden"
         whileInView="show"
         viewport={{ once: true }}
-        className="px-6 md:px-16 lg:px-24 py-20 bg-carbon-dark/20 border-t border-white/5 relative"
+        className="px-6 md:px-16 lg:px-24 py-6 md:py-8 bg-carbon-dark/20 border-t border-white/5 relative"
         id="our-team"
       >
-        <div className="max-w-7xl mx-auto space-y-16">
+        <div className="max-w-7xl mx-auto space-y-8">
           
           {/* Centered, high-contrast header matching the screenshot reference */}
           <div className="text-center space-y-4 max-w-4xl mx-auto">
@@ -762,7 +768,7 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
       </motion.section>
 
       {/* SECTION 4: ECO REGILIENCE PORTFOLIO (WITH CNC BACKDROP) */}
-      <section className="relative py-16 overflow-hidden" id="latest-projects-section" data-purpose="latest-projects-section">
+      <section className="relative py-4 md:py-6 overflow-hidden" id="latest-projects-section" data-purpose="latest-projects-section">
         {/* Parallax background cover texture */}
         <div 
           className="absolute inset-0 z-0 bg-cover bg-center bg-fixed opacity-[0.09] pointer-events-none"
@@ -774,7 +780,7 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
         />
 
         <div className="relative z-10 max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16 space-y-4">
+          <div className="text-center mb-8 space-y-2">
             <span className="text-eco-green text-sm font-semibold uppercase tracking-[0.25em] block">
               Latest Projects
             </span>
@@ -784,9 +790,10 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
           </div>
 
           {/* HORIZONTAL ACTION NAVIGATION BAR - FULLY OPTIMIZED FOR ALL SCREEN SIZES */}
-          <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6 mb-16 max-w-5xl mx-auto">
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6 mb-8 max-w-5xl mx-auto">
             {/* Button 1: CNC Mission - Our Team */}
             <motion.button
+              initial={{ y: 0, borderColor: 'rgba(33, 53, 41, 1)', backgroundColor: 'rgba(17, 26, 20, 0.6)' }}
               whileHover={{ y: -4, borderColor: 'rgba(82, 183, 136, 0.5)', backgroundColor: 'rgba(21, 35, 26, 0.8)' }}
               whileTap={{ scale: 0.95 }}
               onClick={handleOurTeamRedirect}
@@ -808,9 +815,13 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
 
             {/* Button 2: Conservation - Activities */}
             <motion.button
+              initial={{ y: 0, borderColor: 'rgba(33, 53, 41, 1)', backgroundColor: 'rgba(17, 26, 20, 0.6)' }}
               whileHover={{ y: -4, borderColor: 'rgba(82, 183, 136, 0.5)', backgroundColor: 'rgba(21, 35, 26, 0.8)' }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setActiveTab('projects')}
+              onClick={() => {
+                setActiveTab('projects');
+                toast('Showing active carbon mitigation milestones.', 'eco');
+              }}
               className="flex flex-col items-center justify-center text-center p-3 sm:p-5 lg:p-8 bg-[#111a14]/60 border border-[#213529] rounded-2xl sm:rounded-3xl transition-all duration-300 group cursor-pointer shadow-lg active:shadow-md h-full min-h-[96px] md:min-h-[160px] space-y-1 sm:space-y-3 relative overflow-hidden"
               aria-label="Navigate to Conservation Activities section"
             >
@@ -829,10 +840,12 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
 
             {/* Button 3: Visuals - Gallery */}
             <motion.button
+              initial={{ y: 0, borderColor: 'rgba(33, 53, 41, 1)', backgroundColor: 'rgba(17, 26, 20, 0.6)' }}
               whileHover={{ y: -4, borderColor: 'rgba(82, 183, 136, 0.5)', backgroundColor: 'rgba(21, 35, 26, 0.8)' }}
               whileTap={{ scale: 0.95 }}
               onClick={() => {
                 setActiveTab('gallery');
+                toast('Opening decentralized photo verification logs.', 'eco');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               className="flex flex-col items-center justify-center text-center p-3 sm:p-5 lg:p-8 bg-[#111a14]/60 border border-[#213529] rounded-2xl sm:rounded-3xl transition-all duration-300 group cursor-pointer shadow-lg active:shadow-md h-full min-h-[96px] md:min-h-[160px] space-y-1 sm:space-y-3 relative overflow-hidden"
@@ -868,7 +881,7 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
       </section>
 
       {/* SECTION 5: CLIENT TESTIMONIALS */}
-      <section className="relative px-6 py-6" id="testimonials-section" data-purpose="testimonials-section">
+      <section className="relative px-6 py-4" id="testimonials-section" data-purpose="testimonials-section">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
           
           <div className="lg:col-span-5 space-y-6">
@@ -925,6 +938,7 @@ export default function HomeView({ setActiveTab }: HomeViewProps) {
         </div>
       </section>
 
+      </div>
     </div>
   );
 }

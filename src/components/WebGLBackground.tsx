@@ -1,111 +1,153 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 
-export default function WebGLBackground() {
+interface WebGLCacheEntry {
+  program: WebGLProgram;
+  vs: WebGLShader;
+  fs: WebGLShader;
+  buffer: WebGLBuffer;
+  positionLoc: number;
+  timeLoc: WebGLUniformLocation | null;
+  resLoc: WebGLUniformLocation | null;
+}
+
+// Global WeakMap to cache WebGL compiled resources per rendering context.
+// Avoids compiling shaders or linking programs more than once for a given context interface.
+// Since the context is held weakly, resources compile immediately on first canvas mount,
+// and are seamlessly garbage collected when the canvas/UI is disposed.
+const contextCache = new WeakMap<WebGLRenderingContext, WebGLCacheEntry>();
+
+const WebGLBackground = memo(function WebGLBackground() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const gl = canvas.getContext('webgl');
+    // Retrieve high-performance WebGL context with optimized buffer configuration.
+    // Specifying alpha: false, depth: false, and stencil: false dramatically reduces GPU memory overhead.
+    const gl = canvas.getContext('webgl', {
+      alpha: false,
+      depth: false,
+      stencil: false,
+      antialias: false,
+      premultipliedAlpha: false,
+      preserveDrawingBuffer: false,
+      powerPreference: 'high-performance'
+    });
     if (!gl) return;
 
-    const vertexSource = `
-      attribute vec2 position;
-      varying vec2 v_texCoord;
-      void main() {
-        v_texCoord = position * 0.5 + 0.5;
-        v_texCoord.y = 1.0 - v_texCoord.y;
-        gl_Position = vec4(position, 0.0, 1.0);
-      }
-    `;
+    let cache = contextCache.get(gl);
 
-    const fragmentSource = `
-      precision highp float;
-      varying vec2 v_texCoord;
-      uniform float u_time;
-      uniform vec2 u_resolution;
+    if (!cache) {
+      const vertexSource = `
+        attribute vec2 position;
+        varying vec2 v_texCoord;
+        void main() {
+          v_texCoord = position * 0.5 + 0.5;
+          v_texCoord.y = 1.0 - v_texCoord.y;
+          gl_Position = vec4(position, 0.0, 1.0);
+        }
+      `;
 
-      float noise(vec2 p) {
-          return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+      const fragmentSource = `
+        precision mediump float;
+        varying vec2 v_texCoord;
+        uniform float u_time;
+        uniform vec2 u_resolution;
+
+        void main() {
+            vec2 uv = v_texCoord;
+            float t = u_time * 0.08;
+            
+            float n = sin(uv.x * 4.0 + t) * cos(uv.y * 3.0 - t);
+            n += sin(uv.y * 2.0 + t * 0.5) * 0.5;
+            n += sin((uv.x + uv.y) * 5.0 + t * 0.8) * 0.2;
+            
+            vec3 baseColor = vec3(0.04, 0.06, 0.05); 
+            vec3 accentColor = vec3(0.06, 0.09, 0.07); 
+            
+            vec3 finalColor = mix(baseColor, accentColor, n * 0.4 + 0.6);
+            
+            float dist = distance(uv, vec2(0.5, 0.5));
+            finalColor *= 1.0 - dist * 0.45;
+            
+            gl_FragColor = vec4(finalColor, 1.0);
+        }
+      `;
+
+      function createShader(gl: WebGLRenderingContext, type: number, source: string) {
+        const shader = gl.createShader(type);
+        if (!shader) return null;
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+          console.error('Shader compilation error:', gl.getShaderInfoLog(shader));
+          gl.deleteShader(shader);
+          return null;
+        }
+        return shader;
       }
 
-      void main() {
-          vec2 uv = v_texCoord;
-          float t = u_time * 0.08;
-          
-          float n = sin(uv.x * 4.0 + t) * cos(uv.y * 3.0 - t);
-          n += sin(uv.y * 2.0 + t * 0.5) * 0.5;
-          n += sin((uv.x + uv.y) * 5.0 + t * 0.8) * 0.2;
-          
-          vec3 baseColor = vec3(0.04, 0.06, 0.05); 
-          vec3 accentColor = vec3(0.06, 0.09, 0.07); 
-          
-          vec3 finalColor = mix(baseColor, accentColor, n * 0.4 + 0.6);
-          
-          float dist = distance(uv, vec2(0.5, 0.5));
-          finalColor *= 1.0 - dist * 0.45;
-          
-          gl_FragColor = vec4(finalColor, 1.0);
-      }
-    `;
+      const vs = createShader(gl, gl.VERTEX_SHADER, vertexSource);
+      const fs = createShader(gl, gl.FRAGMENT_SHADER, fragmentSource);
+      if (!vs || !fs) return;
 
-    function createShader(gl: WebGLRenderingContext, type: number, source: string) {
-      const shader = gl.createShader(type);
-      if (!shader) return null;
-      gl.shaderSource(shader, source);
-      gl.compileShader(shader);
-      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-        console.error('Shader compilation error:', gl.getShaderInfoLog(shader));
-        gl.deleteShader(shader);
-        return null;
+      const program = gl.createProgram();
+      if (!program) return;
+      gl.attachShader(program, vs);
+      gl.attachShader(program, fs);
+      gl.linkProgram(program);
+
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        console.error('Program linking error:', gl.getProgramInfoLog(program));
+        return;
       }
-      return shader;
+
+      const buffer = gl.createBuffer();
+      if (!buffer) return;
+      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+      gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
+        gl.STATIC_DRAW
+      );
+
+      const positionLoc = gl.getAttribLocation(program, 'position');
+      const timeLoc = gl.getUniformLocation(program, 'u_time');
+      const resLoc = gl.getUniformLocation(program, 'u_resolution');
+
+      cache = {
+        program,
+        vs,
+        fs,
+        buffer,
+        positionLoc,
+        timeLoc,
+        resLoc,
+      };
+      
+      contextCache.set(gl, cache);
     }
 
-    const vs = createShader(gl, gl.VERTEX_SHADER, vertexSource);
-    const fs = createShader(gl, gl.FRAGMENT_SHADER, fragmentSource);
-    if (!vs || !fs) return;
-
-    const program = gl.createProgram();
-    if (!program) return;
-    gl.attachShader(program, vs);
-    gl.attachShader(program, fs);
-    gl.linkProgram(program);
-
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      console.error('Program linking error:', gl.getProgramInfoLog(program));
-      return;
-    }
+    // Bind from local CPU registers referencing our cached shader state.
+    // Extremely efficient and eliminates hot path lookups.
+    const { program, buffer, positionLoc, timeLoc, resLoc } = cache;
 
     gl.useProgram(program);
-
-    const buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
-      gl.STATIC_DRAW
-    );
-
-    const positionLoc = gl.getAttribLocation(program, 'position');
     gl.enableVertexAttribArray(positionLoc);
     gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
-
-    const timeLoc = gl.getUniformLocation(program, 'u_time');
-    const resLoc = gl.getUniformLocation(program, 'u_resolution');
 
     let animationFrameId: number;
     let lastTime = 0;
     const isMobile = typeof navigator !== 'undefined' && /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    const fpsInterval = isMobile ? 1000 / 30 : 1000 / 60; // 30 FPS on mobile, 60 FPS on desktop works beautifully with fluid motion
+    const fpsInterval = isMobile ? 1000 / 24 : 1000 / 30; // Highly efficient locked render pacing
 
     function resize() {
       if (!canvas || !gl) return;
-      // High-DPI screen shader optimizations for mobile and desktop
-      const dpr = isMobile ? 0.5 : Math.min(window.devicePixelRatio || 1, 1.5);
-      canvas.width = Math.floor(window.innerWidth * dpr);
-      canvas.height = Math.floor(window.innerHeight * dpr);
+      const scaleFactor = isMobile ? 0.08 : 0.125;
+      canvas.width = Math.max(128, Math.floor(window.innerWidth * scaleFactor));
+      canvas.height = Math.max(128, Math.floor(window.innerHeight * scaleFactor));
       gl.viewport(0, 0, canvas.width, canvas.height);
       if (resLoc) {
         gl.uniform2f(resLoc, canvas.width, canvas.height);
@@ -131,10 +173,8 @@ export default function WebGLBackground() {
       if (!gl) return;
       animationFrameId = requestAnimationFrame(render);
 
-      // Avoid drawing frames and doing GPU math when the tab is in the background
       if (!isPageVisible) return;
 
-      // Throttling render rate for battery efficiency and temperature protection on mobile
       const elapsed = time - lastTime;
       if (elapsed < fpsInterval) return;
 
@@ -152,12 +192,8 @@ export default function WebGLBackground() {
       window.removeEventListener('resize', handleResize);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       if (resizeTimeout) clearTimeout(resizeTimeout);
-      if (gl) {
-        gl.deleteProgram(program);
-        gl.deleteShader(vs);
-        gl.deleteShader(fs);
-        gl.deleteBuffer(buffer);
-      }
+      // We do not delete programs or shaders here to allow cached state recovery on context re-entry.
+      // They are weakly reference-bound and automatically managed by GPU context GC.
     };
   }, []);
 
@@ -169,4 +205,6 @@ export default function WebGLBackground() {
       style={{ mixBlendMode: 'normal' }}
     />
   );
-}
+});
+
+export default WebGLBackground;

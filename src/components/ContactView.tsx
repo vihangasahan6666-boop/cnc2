@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { MapPin, Phone, Mail, CheckCircle, Send, AlertCircle, Trash2 } from 'lucide-react';
+import { MapPin, Phone, Mail, CheckCircle, Send, AlertCircle } from 'lucide-react';
 import { ContactSubmission } from '../types';
+import { useToast } from './ToastContext';
+import { collection, doc, setDoc } from 'firebase/firestore';
+import { db, handleFirestoreError, OperationType } from '../firebase';
 
 export default function ContactView() {
+  const { toast } = useToast();
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -28,55 +32,82 @@ export default function ContactView() {
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
-    if (!form.name.trim()) newErrors.name = 'Name is required';
-    
-    if (!form.email.trim()) {
-      newErrors.email = 'Email direction is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      newErrors.email = 'Please provide a valid email address';
+    const nameTrimmed = form.name.trim();
+    const emailTrimmed = form.email.trim();
+    const phoneTrimmed = form.phone.trim();
+    const messageTrimmed = form.message.trim();
+
+    if (!nameTrimmed) {
+      newErrors.name = 'Name is required';
     }
     
-    if (!form.phone.trim()) {
-      newErrors.phone = 'Phone number is required';
-    } else if (!/^\+?[\d\s-]{7,15}$/.test(form.phone)) {
-      newErrors.phone = 'Provide a valid phone format';
+    // Either email address or phone number is required
+    if (!emailTrimmed && !phoneTrimmed) {
+      newErrors.email = 'At least email or phone number is required';
+      newErrors.phone = 'At least email or phone number is required';
+    } else {
+      if (emailTrimmed && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailTrimmed)) {
+        newErrors.email = 'Please provide a valid email address';
+      }
+      if (phoneTrimmed && !/^\+?[\d\s-]{7,15}$/.test(phoneTrimmed)) {
+        newErrors.phone = 'Provide a valid phone format';
+      }
     }
     
-    if (!form.subject) newErrors.subject = 'Please select a subject';
-    if (!form.message.trim()) newErrors.message = 'Please type a brief message';
+    if (!messageTrimmed) {
+      newErrors.message = 'Please type a brief message';
+    }
 
     setErrors(newErrors);
+    
+    if (Object.keys(newErrors).length > 0) {
+      toast('Please correct the validation errors on the form.', 'error');
+    }
+    
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSending(true);
 
-    // Simulate network delay
-    setTimeout(() => {
-      const newSubmission: ContactSubmission = {
-        id: crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2, 9),
-        name: form.name.trim(),
-        email: form.email.trim(),
-        phone: form.phone.trim(),
-        subject: form.subject,
-        message: form.message.trim(),
-        createdAt: new Date().toLocaleString(),
-      };
+    const docId = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2, 9);
+    
+    const docData = {
+      id: docId,
+      name: form.name.trim(),
+      email: form.email.trim() || '',
+      phone: form.phone.trim() || '',
+      subject: form.subject || null, // save like null or did not fill
+      message: form.message.trim(),
+      createdAt: new Date().toISOString()
+    };
 
-      try {
-        const existing = [...submissions, newSubmission];
-        localStorage.setItem('cnc_submissions', JSON.stringify(existing));
-        setSubmissions(existing);
-      } catch (err) {
-        console.error('Failed to save to localStorage:', err);
-      }
+    // Construct local type representation to update local auditing
+    const newSubmission: ContactSubmission = {
+      id: docId,
+      name: docData.name,
+      email: docData.email,
+      phone: docData.phone,
+      subject: docData.subject || "did not fill",
+      message: docData.message,
+      createdAt: new Date().toLocaleString()
+    };
 
+    try {
+      // Save directly to raw Firebase firestore cloud database
+      await setDoc(doc(db, 'submissions', docId), docData);
+
+      // Successfully saved, now sync with localStorage audit list
+      const existing = [...submissions, newSubmission];
+      localStorage.setItem('cnc_submissions', JSON.stringify(existing));
+      setSubmissions(existing);
+      
       setSuccessSubmission(newSubmission);
-      setIsSending(false);
+      toast('Your message has been secure-saved into Google Firebase!', 'success');
+
       setForm({
         name: '',
         email: '',
@@ -85,17 +116,20 @@ export default function ContactView() {
         message: '',
       });
       setErrors({});
-    }, 1200);
-  };
-
-  const clearSubmissions = () => {
-    try {
-      localStorage.removeItem('cnc_submissions');
-      setSubmissions([]);
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
+      console.error('Failed to transmit to Firebase Firestore:', err);
+      toast('Transmission failed to complete.', 'error');
+      try {
+        handleFirestoreError(err, OperationType.CREATE, `submissions/${docId}`);
+      } catch (innerError) {
+        // Managed or logged
+      }
+    } finally {
+      setIsSending(false);
     }
   };
+
+  // Submissions are immortalized and cannot be deleted after being submitted
 
   return (
     <div className="space-y-24 pb-20 px-6 md:px-16 lg:px-24 py-12 font-manrope">
@@ -256,23 +290,15 @@ export default function ContactView() {
                     <select
                       value={form.subject}
                       onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                      className={`w-full bg-[#0e1a14] border-b ${
-                        errors.subject ? 'border-red-500' : 'border-white/10'
-                      } py-3 text-white focus:outline-none focus:border-eco-green transition-colors font-hanken text-base cursor-pointer`}
+                      className="w-full bg-[#0e1a14] border-b border-white/10 py-3 text-white focus:outline-none focus:border-eco-green transition-colors font-hanken text-base cursor-pointer"
                     >
-                      <option value="" disabled className="text-gray-500">Subject</option>
+                      <option value="" className="text-gray-500">Subject (Optional)</option>
                       <option value="General Inquiry">General Inquiry</option>
                       <option value="Corporate Partnership">Corporate Partnership</option>
                       <option value="Join a CNC Club">Join a CNC Club</option>
                       <option value="Family Carbon Program">Family Carbon Program</option>
                       <option value="Volunteer With Us">Volunteer With Us</option>
                     </select>
-                    {errors.subject && (
-                      <span className="text-red-500 text-xs flex items-center mt-1 font-medium">
-                        <AlertCircle className="h-3.5 w-3.5 mr-1" />
-                        {errors.subject}
-                      </span>
-                    )}
                   </div>
 
                   {/* Message Input */}
@@ -388,15 +414,8 @@ export default function ContactView() {
           <div className="flex items-center justify-between">
             <div>
               <h4 className="text-white font-manrope font-bold text-base">Local Submissions Audit Log</h4>
-              <p className="text-xs text-gray-500 mt-0.5">Stored securely in your local environment, verification only.</p>
+              <p className="text-xs text-gray-500 mt-0.5">Stored securely in your local environment, verification only. Submissions are undeletable.</p>
             </div>
-            <button
-              onClick={clearSubmissions}
-              className="text-red-400/80 hover:text-red-400 transition-colors text-xs flex items-center space-x-1 border border-red-500/10 px-3 py-1.5 rounded-lg hover:bg-red-500/10 cursor-pointer"
-            >
-              <Trash2 className="h-3.5 w-3.5" />
-              <span>Clear submissions</span>
-            </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

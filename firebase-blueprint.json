@@ -1,0 +1,47 @@
+{
+  "entities": {
+    "ContactSubmission": {
+      "title": "Contact Submission",
+      "description": "Form submission from the contact us page.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique ID of the submission"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the submitter"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the submitter (optional)"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the submitter (optional)"
+        },
+        "subject": {
+          "type": "string",
+          "description": "Subject of interest (optional)"
+        },
+        "message": {
+          "type": "string",
+          "description": "Detailed message"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp when the submission was created"
+        }
+      },
+      "required": ["id", "name", "message", "createdAt"]
+    }
+  },
+  "firestore": {
+    "submissions/{submissionId}": {
+      "schema": "ContactSubmission",
+      "description": "Contact submissions and inquiries collection"
+    }
+  }
+}

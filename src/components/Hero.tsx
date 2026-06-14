@@ -1,17 +1,20 @@
 import { useState } from 'react';
-import { ArrowRight, X, Calendar, Sprout, Users, Sparkles, Award } from 'lucide-react';
+import { ArrowRight, X, Calendar, Sprout, Users, Sparkles, Award, Leaf, Newspaper } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ViewType } from '../types';
+import { useToast } from './ToastContext';
 
 interface HeroProps {
   setActiveTab: (tab: ViewType) => void;
 }
 
 export default function Hero({ setActiveTab }: HeroProps) {
+  const { toast } = useToast();
   const [isNewsOpen, setIsNewsOpen] = useState(false);
 
   const handleNewsOpen = () => {
     setIsNewsOpen(true);
+    toast('Loaded 4 active CNC Environmental bulletins.', 'eco');
   };
 
   const handleNewsClose = () => {
@@ -71,30 +74,69 @@ export default function Hero({ setActiveTab }: HeroProps) {
         {/* Empty Overlay container */}
         <div className="absolute inset-0 flex flex-col justify-end px-6 md:px-16 lg:px-24 pb-32 max-w-4xl" />
 
-        {/* Golden Badge Cutout inside the hero bottom right - compact version (25% smaller) */}
-        <div 
-          className="absolute bottom-0 right-0 p-4 rounded-tl-4xl rounded-br-[2rem] hidden sm:block" 
-          style={{ backgroundColor: 'rgba(15, 21, 17, 1)' }}
+        {/* Floating Animated Leaf-Shaped News Trigger */}
+        <motion.div
+          className="absolute bottom-6 right-6 hidden sm:block z-20"
+          animate={{ y: [0, -5, 0] }}
+          transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
         >
-          <button
+          {/* Soft breathing ring pulse underlay */}
+          <motion.div
+            className="absolute inset-0 bg-yellow-400/20 rounded-tl-[2.25rem] rounded-br-[2.25rem] rounded-tr-[0.5rem] rounded-bl-[0.5rem] -z-10"
+            animate={{
+              scale: [1, 1.07, 1],
+              opacity: [0.75, 0, 0.75],
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: 3.5,
+              ease: 'easeInOut',
+            }}
+          />
+          
+          <motion.button
             onClick={handleNewsOpen}
-            className="py-3.5 px-10 bg-[#ffd700] hover:bg-[#e6c200] active:scale-98 transition-all rounded-full flex items-center justify-center shadow-lg font-bold text-black text-xs uppercase tracking-wider group cursor-pointer"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+            className="py-4 px-10 bg-gradient-to-br from-[#ffd700] via-[#ffe54d] to-[#e6c200] hover:from-eco-green hover:to-eco-hover text-black hover:text-white font-extrabold text-[13px] uppercase tracking-wider relative flex items-center justify-center shadow-[0_10px_25px_rgba(253,215,0,0.3)] hover:shadow-[0_12px_30px_rgba(82,183,136,0.35)] transition-all duration-300 cursor-pointer select-none rounded-tl-[2.25rem] rounded-br-[2.25rem] rounded-tr-[0.5rem] rounded-bl-[0.5rem] border border-white/20 overflow-hidden group will-change-transform"
           >
-            <span className="px-3">CNC News</span>
-            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-          </button>
-        </div>
+            {/* Custom leaf wind ripple overlay effect */}
+            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-white/0 via-white/15 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+            
+            <Leaf className="h-4.5 w-4.5 mr-2.5 text-emerald-800 group-hover:text-emerald-100 transition-colors duration-300 animate-pulse flex-shrink-0" />
+            <span className="px-1 font-manrope font-extrabold tracking-widest">CNC News</span>
+            <Newspaper className="h-4.5 w-4.5 ml-2.5 text-emerald-900 group-hover:text-white transition-all duration-300 group-hover:rotate-6 group-hover:scale-110 flex-shrink-0" />
+          </motion.button>
+        </motion.div>
       </div>
 
-      {/* Mobile Consultation CTA Banner below Hero on small screens - compact version (25% smaller) */}
-      <div className="block sm:hidden mt-4 text-center">
-        <button
-          onClick={handleNewsOpen}
-          className="mx-auto py-3 px-8 bg-[#ffd700] hover:bg-[#e6c200] transition-all rounded-xl flex items-center justify-center shadow-md font-bold text-black text-xs uppercase tracking-wider cursor-pointer"
-        >
-          <span>CNC News</span>
-          <ArrowRight className="h-3.5 w-3.5 ml-2" />
-        </button>
+      {/* Mobile News Trigger - 10% larger, animated leaf-shaped, with soft pulsing organic aura */}
+      <div className="block sm:hidden mt-5 text-center px-4">
+        <div className="relative inline-block">
+          {/* Mobile breathing ring pulse underlay */}
+          <motion.div
+            className="absolute inset-0 bg-yellow-400/25 rounded-tl-[1.75rem] rounded-br-[1.75rem] rounded-tr-[0.35rem] rounded-bl-[0.35rem] -z-10"
+            animate={{
+              scale: [1, 1.07, 1],
+              opacity: [0.8, 0, 0.8],
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: 3.5,
+              ease: 'easeInOut',
+            }}
+          />
+          <motion.button
+            onClick={handleNewsOpen}
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.96 }}
+            className="mx-auto py-3.5 px-8 bg-gradient-to-br from-[#ffd700] to-[#e6c200] hover:from-eco-green hover:to-eco-hover text-black hover:text-white font-extrabold text-[12px] uppercase tracking-widest flex items-center justify-center shadow-[0_8px_20px_rgba(253,215,0,0.25)] hover:shadow-[0_10px_25px_rgba(82,183,136,0.35)] transition-all duration-300 rounded-tl-[1.75rem] rounded-br-[1.75rem] rounded-tr-[0.35rem] rounded-bl-[0.35rem] border border-white/10 group cursor-pointer"
+          >
+            <Leaf className="h-4 w-4 mr-2 text-emerald-800 group-hover:text-white transition-colors duration-300" />
+            <span className="font-manrope">CNC News</span>
+            <Newspaper className="h-4 w-4 ml-2 text-emerald-900 group-hover:text-white transition-all" />
+          </motion.button>
+        </div>
       </div>
 
       {/* Interactive News Feed Modal - Fully responsive overlay */}
@@ -204,7 +246,10 @@ export default function Hero({ setActiveTab }: HeroProps) {
               {/* Footer */}
               <div className="px-6 py-4 border-t border-[#213529]/40 bg-[#111a14]/40 flex justify-end">
                 <button
-                  onClick={handleNewsClose}
+                  onClick={() => {
+                    handleNewsClose();
+                    toast('CNC Environmental bulletins cleared from view.', 'info');
+                  }}
                   className="py-2.5 px-6 bg-eco-green/10 hover:bg-eco-green/20 text-eco-green font-bold text-xs uppercase tracking-wider rounded-lg transition-all cursor-pointer"
                 >
                   Clear Feed

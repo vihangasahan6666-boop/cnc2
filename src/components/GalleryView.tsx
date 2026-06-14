@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   Search, X, MapPin, Calendar, Copy, ChevronLeft, ChevronRight, CheckCircle2, Info, Sliders, Eye
 } from 'lucide-react';
+import { useToast } from './ToastContext';
 
 interface GalleryItem {
   id: string;
@@ -240,6 +241,7 @@ function GalleryCard({ item, onClick }: CardProps) {
 }
 
 export default function GalleryView() {
+  const { toast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -336,6 +338,7 @@ export default function GalleryView() {
   const handleCopyHash = (hash: string) => {
     navigator.clipboard.writeText(hash);
     setCopiedStatus(true);
+    toast(`Audit Hash ${hash} copied to clipboard!`, 'copy');
     setTimeout(() => setCopiedStatus(false), 2000);
   };
 

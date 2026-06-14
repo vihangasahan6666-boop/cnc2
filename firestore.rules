@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global safety net - default deny all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Alphanumeric ID security logic
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+
+    // Helper to fetch the request payload
+    function incoming() { 
+      return request.resource.data; 
+    }
+
+    // Email format matching validation
+    function isOptionalEmailValid(emailVal) {
+      return emailVal == null || emailVal == "" || (emailVal is string && emailVal.size() <= 256 && emailVal.matches('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'));
+    }
+
+    // Phone format matching validation
+    function isOptionalPhoneValid(phoneVal) {
+      return phoneVal == null || phoneVal == "" || (phoneVal is string && phoneVal.size() <= 32 && phoneVal.matches('^\\+?[0-9\\s()\\-]+$'));
+    }
+
+    // Subject format validation
+    function isOptionalSubjectValid(subjVal) {
+      return subjVal == null || subjVal == "" || (subjVal is string && subjVal.size() <= 128);
+    }
+
+    // Master validator function for submissions input
+    function isValidSubmission(data) {
+      return data.keys().hasAll(['id', 'name', 'message', 'createdAt']) && 
+             data.keys().size() <= 7 && 
+             data.id is string && data.id.size() <= 128 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 256 &&
+             data.message is string && data.message.size() > 0 && data.message.size() <= 5000 &&
+             // Guarantee that either email or phone contains a value
+             ((data.get('email', '') != '') || (data.get('phone', '') != '')) &&
+             isOptionalEmailValid(data.get('email', null)) &&
+             isOptionalPhoneValid(data.get('phone', null)) &&
+             isOptionalSubjectValid(data.get('subject', null));
+    }
+
+    // Secure Submissions collection gate
+    match /submissions/{submissionId} {
+      allow create: if isValidId(submissionId) && isValidSubmission(incoming());
+      allow read, update, delete: if false;
+    }
+  }
+}
